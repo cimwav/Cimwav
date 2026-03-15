@@ -13,7 +13,6 @@
         .container { max-width: 800px; margin: auto; padding: 20px; }
         .search-box { width: 100%; padding: 15px; background: var(--card); border: 1px solid var(--border); color: white; border-radius: 8px; margin-bottom: 40px; font-size: 16px; outline: none; }
         
-        /* Admin Section - Hidden completely */
         #adminPanel { display: none; background: #161616; padding: 20px; border: 1px solid var(--primary); border-radius: 12px; margin-bottom: 40px; text-align: left; }
         .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .admin-grid input { padding: 12px; border-radius: 6px; border: 1px solid #333; background: #000; color: #fff; }
@@ -27,7 +26,7 @@
         .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 8px; cursor: pointer; flex: 1; }
         .sold-tag { position: absolute; top: 15px; right: 15px; background: #ff3e3e; color: #fff; padding: 5px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; }
 
-        footer { position: fixed; bottom: 0; width: 100%; background: #000; padding: 20px; border-top: 1px solid var(--border); display: flex; justify-content: center; gap: 20px; }
+        footer { position: fixed; bottom: 0; width: 100%; background: #000; padding: 20px; border-top: 1px solid var(--border); display: flex; justify-content: center; gap: 20px; z-index: 100; }
     </style>
 </head>
 <body>
@@ -48,62 +47,72 @@
         </div>
     </div>
 
-    <input type="text" id="search" class="search-box" placeholder="Search for your next hit..." onkeyup="search()">
+    <input type="text" id="mainSearchBar" class="search-box" placeholder="Search for your next hit..." onkeyup="runSearch()">
     <div id="list">Loading beats...</div>
 </div>
 
 <footer>
-    <button class="btn-outline" onclick="contact()">CONTACT</button>
-    <button class="btn-outline" onclick="share()">SHARE SITE</button>
+    <button class="btn-outline" onclick="contactMe()">CONTACT</button>
+    <button class="btn-outline" onclick="shareSite()">SHARE SITE</button>
 </footer>
 
 <script>
     // --- 1. CONFIGURATION ---
-    const SB_URL = 'https://uuljpvwwztsgsrlpnjrm.supabase.co'; 
-    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1bGpwdnd3enRzZ3NybHBuanJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1NzM1OTksImV4cCI6MjA4OTE0OTU5OX0.b4JTcPDVuFz7uLyQdwF3yRSYa1llu6F141EAWLyFR4U';
-    const supabase = supabase.createClient(SB_URL, SB_KEY);
+    // استبدل هذه بالقيم الخاصة بك من Supabase
+    const SB_URL = 'YOUR_SUPABASE_URL'; 
+    const SB_KEY = 'YOUR_SUPABASE_ANON_KEY';
+    
+    // تأكدنا هنا أن التعريف يتم مرة واحدة فقط
+    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-    let isAdmin = false;
-    let beats = [];
+    let isAdminMode = false;
+    let beatsData = [];
 
-    // --- 2. SECRET ACCESS LOGIC ---
-    // الموقع سيراقب الرابط، إذا أضفت #admin سيطلب الباسورد
-    function checkSecretAccess() {
+    // --- 2. SECRET ACCESS ---
+    function checkSecret() {
         if (window.location.hash === "#admin") {
             let p = prompt("Enter Secret Key:");
-            if (p === "123") { // باسوردك
-                isAdmin = true;
+            if (p === "123") {
+                isAdminMode = true;
                 document.getElementById('adminPanel').style.display = 'block';
-                render(beats);
+                renderBeats(beatsData);
             } else {
-                window.location.hash = ""; // مسح الكلمة من الرابط إذا كان الباسورد خطأ
+                window.location.hash = "";
             }
         }
     }
 
-    // مراقبة تغيير الرابط (إذا كتبته وهو داخل الموقع)
-    window.addEventListener('hashchange', checkSecretAccess);
+    window.addEventListener('hashchange', checkSecret);
 
-    async function getBeats() {
-        const { data } = await supabase.from('beats').select('*').order('created_at', {ascending: false});
-        if (data) { beats = data; render(beats); checkSecretAccess(); }
+    // --- 3. FUNCTIONS ---
+    async function loadData() {
+        const { data, error } = await supabaseClient
+            .from('beats')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (data) {
+            beatsData = data;
+            renderBeats(beatsData);
+            checkSecret();
+        }
     }
 
-    function render(data) {
-        const list = document.getElementById('list');
-        list.innerHTML = data.map(b => `
+    function renderBeats(dataToDisplay) {
+        const listDiv = document.getElementById('list');
+        listDiv.innerHTML = dataToDisplay.map(b => `
             <div class="beat-card">
                 ${b.is_sold ? '<span class="sold-tag">SOLD</span>' : ''}
                 <span class="title">${b.title}</span>
                 <audio src="${b.audio_url}" controls controlsList="nodownload"></audio>
                 <div class="price-row">
-                    <button class="btn-outline" onclick="buy('${b.title}', 'Exclusive', ${b.exc_price})" ${b.is_sold ? 'disabled' : ''}>Exclusive: $${b.exc_price}</button>
-                    <button class="btn" onclick="buy('${b.title}', 'Ultimate', ${b.ult_price})" ${b.is_sold ? 'disabled' : ''}>Ultimate: $${b.ult_price}</button>
+                    <button class="btn-outline" onclick="handleBuy('${b.title}', 'Exclusive', ${b.exc_price})" ${b.is_sold ? 'disabled' : ''}>Exclusive: $${b.exc_price}</button>
+                    <button class="btn" onclick="handleBuy('${b.title}', 'Ultimate', ${b.ult_price})" ${b.is_sold ? 'disabled' : ''}>Ultimate: $${b.ult_price}</button>
                 </div>
-                ${isAdmin ? `
+                ${isAdminMode ? `
                     <div style="margin-top:15px; border-top:1px solid #333; padding-top:15px; display:flex; gap:10px;">
-                        <button onclick="del(${b.id})" style="color:red; background:none; border:none; cursor:pointer;">Delete</button>
-                        <button onclick="sell(${b.id})" style="color:orange; background:none; border:none; cursor:pointer;">Mark Sold</button>
+                        <button onclick="deleteItem(${b.id})" style="color:red; background:none; border:none; cursor:pointer;">Delete</button>
+                        <button onclick="markAsSold(${b.id})" style="color:orange; background:none; border:none; cursor:pointer;">Mark Sold</button>
                     </div>
                 ` : ''}
             </div>
@@ -115,28 +124,41 @@
         const audio_url = document.getElementById('bUrl').value;
         const exc_price = document.getElementById('pExc').value;
         const ult_price = document.getElementById('pUlt').value;
-        if(!title || !audio_url) return;
-        await supabase.from('beats').insert([{title, audio_url, exc_price, ult_price}]);
-        getBeats();
-        alert("Published Successfully!");
+        
+        if(!title || !audio_url) return alert("Please fill all fields");
+
+        await supabaseClient.from('beats').insert([{title, audio_url, exc_price, ult_price}]);
+        loadData();
+        alert("Published!");
     }
 
-    async function del(id) { if(confirm("Delete?")) { await supabase.from('beats').delete().eq('id', id); getBeats(); } }
-    async function sell(id) { await supabase.from('beats').update({is_sold: true}).eq('id', id); getBeats(); }
-
-    function search() {
-        const q = document.getElementById('search').value.toLowerCase();
-        render(beats.filter(b => b.title.toLowerCase().includes(q)));
+    async function deleteItem(id) {
+        if(confirm("Are you sure?")) {
+            await supabaseClient.from('beats').delete().eq('id', id);
+            loadData();
+        }
     }
 
-    function buy(t, p, pr) {
-        window.location.href = `mailto:your-email@gmail.com?subject=Purchase Inquiry: ${t}&body=I am interested in buying ${t} (${p} License) for $${pr}`;
+    async function markAsSold(id) {
+        await supabaseClient.from('beats').update({is_sold: true}).eq('id', id);
+        loadData();
     }
 
-    function contact() { window.location.href = "mailto:your-email@gmail.com"; }
-    function share() { prompt("Copy site link:", window.location.href.split('#')[0]); }
+    function runSearch() {
+        const term = document.getElementById('mainSearchBar').value.toLowerCase();
+        const filtered = beatsData.filter(b => b.title.toLowerCase().includes(term));
+        renderBeats(filtered);
+    }
 
-    getBeats();
+    function handleBuy(t, p, pr) {
+        window.location.href = `mailto:your-email@gmail.com?subject=Purchase Inquiry: ${t}&body=I want to buy ${t} (${p} License) for $${pr}`;
+    }
+
+    function contactMe() { window.location.href = "mailto:your-email@gmail.com"; }
+    function shareSite() { prompt("Copy site link:", window.location.href.split('#')[0]); }
+
+    // تشغيل الجلب عند البداية
+    loadData();
 </script>
 </body>
 </html>
