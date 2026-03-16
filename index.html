@@ -14,62 +14,59 @@
         .container { max-width: 800px; margin: auto; padding: 20px; }
         .search-box { width: 100%; padding: 15px; background: var(--card); border: 1px solid var(--border); color: white; border-radius: 8px; margin-bottom: 40px; font-size: 16px; outline: none; box-sizing: border-box; }
         
-        /* تصميم النافذة الصغيرة Popover */
-        .buy-popover {
-            display: none;
-            position: absolute; 
-            background: #111;
-            border: 2px solid var(--primary);
-            padding: 15px;
-            border-radius: 12px;
-            z-index: 1000;
-            width: 260px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
-        }
-        .pop-info { font-size: 11px; color: #888; background: #1a1a1a; padding: 10px; border-radius: 5px; margin-bottom: 10px; line-height: 1.4; text-align: left; }
-   /* تنسيقات نافذة الشراء والقوانين */
-.buy-popover {
-    display: none; position: absolute; background: #111; border: 2px solid var(--primary);
-    padding: 20px; border-radius: 12px; z-index: 1000; width: 450px; box-shadow: 0 10px 40px rgba(0,0,0,0.9);
-}
-.terms-container { display: flex; gap: 10px; margin-bottom: 15px; }
-.term-box {
-    flex: 1; background: #1a1a1a; padding: 12px; border-radius: 8px;
-    border-top: 3px solid var(--primary); font-size: 11px; color: #ccc; line-height: 1.4;
-}
-.term-box h4 { margin: 0 0 8px 0; color: #fff; font-size: 14px; text-align: center; }
-.middle-text {
-    text-align: center; color: var(--primary); font-size: 12px; font-weight: bold;
-    margin-bottom: 15px; padding: 10px; background: #222; border-radius: 6px;
-}
-.buttons-container { display: flex; gap: 10px; }
-.buy-popover input { width: 100%; margin-bottom: 10px; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 6px; box-sizing: border-box; }
-.wu-details { background: #1a1a1a; padding: 10px; border-radius: 5px; font-size: 12px; color: #ccc; margin-bottom: 15px; border-left: 3px solid yellow; }
+        /* تصميم بطاقة اللحن */
+        .beat-card { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 12px; margin-bottom: 20px; position: relative; text-align: left; }
+        .cover-img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 15px; border: 1px solid #222; }
+        .title { display: block; font-size: 20px; font-weight: bold; margin-bottom: 10px; color: var(--primary); }
+        audio { width: 100%; margin: 10px 0; }
+        .price-row { margin-top: 10px; }
+        .sold-tag { position: absolute; top: 10px; right: 10px; background: red; color: white; padding: 5px 15px; border-radius: 5px; font-weight: bold; z-index: 10; }
 
-/* تنسيق صورة الغلاف */
-.cover-img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+        /* الأزرار */
+        .btn { background: var(--primary); color: #000; border: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; }
+        .btn-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary); padding: 10px 20px; border-radius: 6px; cursor: pointer; margin: 5px; }
+        .btn:hover { opacity: 0.8; }
+
+        /* نافذة الشراء Popover */
+        .buy-popover {
+            display: none; position: absolute; background: #0c0c0c; border: 2px solid var(--primary);
+            padding: 20px; border-radius: 12px; z-index: 1000; width: 450px; box-shadow: 0 10px 50px rgba(0,0,0,1);
+        }
+        .terms-container { display: flex; gap: 10px; margin-bottom: 15px; }
+        .term-box {
+            flex: 1; background: #151515; padding: 12px; border-radius: 8px;
+            border-top: 3px solid var(--primary); font-size: 11px; color: #ccc; line-height: 1.4;
+        }
+        .term-box h4 { margin: 0 0 8px 0; color: #fff; font-size: 14px; text-align: center; }
+        .middle-text {
+            text-align: center; color: var(--primary); font-size: 12px; font-weight: bold;
+            margin-bottom: 15px; padding: 10px; background: #1a1a1a; border-radius: 6px; border: 1px dashed #333;
+        }
+        .buttons-container { display: flex; gap: 10px; }
+        .buy-popover input { width: 100%; margin-bottom: 10px; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 6px; box-sizing: border-box; }
+        .wu-details { background: #1a1a1a; padding: 12px; border-radius: 5px; font-size: 12px; color: #ccc; margin-bottom: 15px; border-left: 4px solid #ffd700; }
+
+        /* لوحة الأدمن */
+        #adminPanel { background: #111; padding: 20px; border-radius: 10px; margin-bottom: 30px; display: none; text-align: left; border: 1px solid #333; }
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .full { grid-column: span 2; }
+        input[type="number"], input[type="text"] { background: #000; border: 1px solid #333; color: white; padding: 10px; border-radius: 5px; }
+        
+        footer { margin-top: 50px; }
     </style>
 </head>
 <body>
 
 <div id="buyPopover" class="buy-popover">
     <div id="step1">
-        <div style="color:var(--primary); font-weight:bold; margin-bottom:10px;">License Terms</div>
-        <div class="terms-text">
-            By purchasing, you agree that the WAV files and your personal contract will be delivered via email within 24 hours after payment verification.
-        </div>
-        <div id="licenseButtons"></div>
-    </div>
-    <div id="buyPopover" class="buy-popover">
-    <div id="step1">
         <div class="terms-container">
             <div class="term-box">
                 <h4>Exclusive License</h4>
-                <p>- Full ownership rights.<br>- Unlimited audio/video streams.<br>- Can be registered on BMI/ASCAP/Content ID.<br>- Stems & WAV included.</p>
+                <p>- Full ownership rights.<br>- Unlimited streams.<br>- Register on BMI/ASCAP.<br>- Stems & WAV included.</p>
             </div>
             <div class="term-box">
                 <h4>Ultimate License</h4>
-                <p>- Non-exclusive rights.<br>- Up to 500,000 streams.<br>- Cannot be registered on Content ID.<br>- High Quality WAV included.</p>
+                <p>- Non-exclusive.<br>- Up to 500k streams.<br>- No Content ID registry.<br>- High Quality WAV.</p>
             </div>
         </div>
         
@@ -84,9 +81,9 @@
         <h4 style="color:var(--primary); margin-top:0;">Western Union Details</h4>
         <div class="wu-details">
             <strong>Send Payment To:</strong><br>
-            Name: [اكتب اسمك الكامل هنا]<br>
-            Country: [اكتب بلدك هنا]<br>
-            Phone/ID: [اكتب رقمك أو هويتك هنا]
+            Name: ROUNI BEATS<br>
+            Country: TUNISIA<br>
+            Phone: +216 XX XXX XXX
         </div>
         
         <input type="text" id="pCustName" placeholder="Your Full Name">
@@ -109,14 +106,14 @@
         <h3 style="margin-top:0; color: var(--primary);">Admin Control</h3>
         <div class="admin-grid">
             <input type="text" id="bTitle" placeholder="Beat Name" class="full">
-            <input type="file" id="bFile" accept="audio/mp3" class="full" style="color: #888;">
+            <input type="file" id="bFile" accept="audio/mp3" class="full">
+            <input type="text" id="addCoverUrl" placeholder="Cover Image URL (Direct link)" class="full">
             <input type="number" id="pExc" placeholder="Exclusive Price ($)">
             <input type="number" id="pUlt" placeholder="Ultimate Price ($)">
-            <input type="text" id="addCoverUrl" placeholder="Cover Image URL">
 
-<label style="color:white;">
-    <input type="checkbox" id="addIsFree"> Make this Beat FREE (MP3 Download)
-</label>
+            <label style="color:white; grid-column: span 2; padding: 10px 0; cursor: pointer;">
+                <input type="checkbox" id="addIsFree"> Make this Beat FREE (MP3 Download)
+            </label>
             <button id="uploadBtn" class="btn full" onclick="saveBeat()">Publish Beat</button>
         </div>
     </div>
@@ -139,6 +136,7 @@
     let isAdminMode = false;
     let beatsData = [];
     let activeBeat = {};
+    let selectedLicense = {};
 
     function checkSecret() {
         if (window.location.hash === "#admin") {
@@ -147,9 +145,7 @@
                 isAdminMode = true;
                 document.getElementById('adminPanel').style.display = 'block';
                 renderBeats(beatsData);
-            } else {
-                window.location.hash = "";
-            }
+            } else { window.location.hash = ""; }
         }
     }
 
@@ -164,23 +160,21 @@
         }
     }
 
- function renderBeats(dataToDisplay) {
+    function renderBeats(dataToDisplay) {
         const listDiv = document.getElementById('list');
         listDiv.innerHTML = dataToDisplay.map(b => `
             <div class="beat-card">
                 ${b.is_sold ? '<span class="sold-tag">SOLD</span>' : ''}
-                
-                <img src="${b.cover_url || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'}" class="cover-img" alt="Cover">
-                
+                <img src="${b.cover_url || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=60'}" class="cover-img" alt="Cover">
                 <span class="title">${b.title}</span>
                 <audio src="${b.audio_url}" controls controlsList="nodownload"></audio>
                 
                 <div class="price-row">
                     ${b.is_free ? `
-                        <a href="${b.audio_url}" download class="btn" style="width:100%; text-align:center; text-decoration:none; display:block;">Download Free MP3</a>
-                    ` : `
+                        <a href="${b.audio_url}" download="${b.title}.mp3" class="btn" style="text-align:center; text-decoration:none; display:block;">Download Free MP3</a>
+                    ` : (b.is_sold ? '' : `
                         <button class="btn" onclick="handleBuy(event, '${b.title}', ${b.exc_price}, ${b.ult_price})">BUY LICENSE</button>
-                    `}
+                    `)}
                 </div>
 
                 ${isAdminMode ? `
@@ -192,12 +186,10 @@
             </div>
         `).join('');
     }
-let selectedLicense = {};
 
     function handleBuy(event, beatName, exc_price, ult_price) {
         event.stopPropagation();
         activeBeat = { name: beatName, exc: exc_price, ult: ult_price };
-        
         document.getElementById('step1').style.display = 'block';
         document.getElementById('step2').style.display = 'none';
         
@@ -211,10 +203,7 @@ let selectedLicense = {};
         const rect = event.currentTarget.getBoundingClientRect();
         popover.style.display = 'block';
         popover.style.top = (window.scrollY + rect.bottom + 10) + 'px';
-        
-        // توسيط النافذة
-        let leftPos = rect.left - 100; 
-        if(leftPos < 10) leftPos = 10;
+        let leftPos = rect.left - 100; if(leftPos < 10) leftPos = 10;
         popover.style.left = leftPos + 'px';
     }
 
@@ -231,70 +220,62 @@ let selectedLicense = {};
         const country = document.getElementById('pCustCountry').value;
         const mtcn = document.getElementById('pMTCN').value;
 
-        if(!name || !email || !country || !mtcn) {
-            return alert("Please fill all your details and the MTCN code.");
-        }
+        if(!name || !email || !country || !mtcn) return alert("Please fill all details!");
 
-        // --- رسالة التأكيد مع خيار الإلغاء (OK / Cancel) ---
-        const isConfirmed = confirm("Are you sure you want to confirm this order?\n\nPlease verify that your MTCN code is correct.");
-        
-        // إذا ضغط الحريف على Cancel (إلغاء)، يتم إيقاف العملية
-        if (!isConfirmed) {
-            return; 
-        }
+        if (!confirm("Confirm order? You agree to the terms.")) return;
 
-        // توليد العقد (PDF) أوتوماتيكياً باسمك واسم الحريف
         const doc = new jsPDF();
         doc.setFont("helvetica", "bold");
         doc.text("CIMWAV LICENSE AGREEMENT", 105, 20, { align: "center" });
         doc.setFontSize(10);
         doc.text(`Licensee Name: ${name}`, 20, 40);
         doc.text(`Email: ${email}`, 20, 45);
-        doc.text(`Country: ${country}`, 20, 50);
-        doc.text(`Beat Title: ${activeBeat.name}`, 20, 65);
-        doc.text(`License Granted: ${selectedLicense.type}`, 20, 70);
-        doc.text(`Transaction MTCN: ${mtcn}`, 20, 75);
+        doc.text(`Beat: ${activeBeat.name}`, 20, 55);
+        doc.text(`License: ${selectedLicense.type}`, 20, 60);
+        doc.text(`MTCN: ${mtcn}`, 20, 70);
         doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 80);
         doc.text("Signature: ROUNI - CIMWAV PRODUCTIONS", 20, 110);
+        doc.save(`Contract_${activeBeat.name}.pdf`);
 
-        // تحميل العقد كملف جاهز لتقوم أنت بإرساله لاحقاً
-        doc.save(`Contract_${activeBeat.name}_${name}.pdf`);
-
-        // رسالة التأكيد النهائية
-        alert("Thank you! Your order has been confirmed.\n\nThe WAV file and your licensed contract will be delivered to your email after payment verification.");
-
-        // مكان كود الإيميل الصامت (EmailJS) مستقبلاً يوضع هنا.
-        // في الوقت الحالي، يمكنك استخدام Supabase لحفظ الطلب في جدول (Orders) إذا أردت.
-
+        alert("Confirmed! WAV & Contract will be sent to your email after verification.");
         closePopover();
     }
 
-    function closePopover() {
-        const popover = document.getElementById('buyPopover');
-        if(popover) popover.style.display = 'none';
-    }
+    function closePopover() { document.getElementById('buyPopover').style.display = 'none'; }
 
-    // إغلاق النافذة عند الضغط خارجها
-    window.onclick = function(e) { 
+    window.onclick = function(e) {
         const popover = document.getElementById('buyPopover');
-        if (popover && !e.target.closest('#buyPopover') && !e.target.closest('.btn')) {
-            closePopover();
-        }
+        if (popover && !e.target.closest('#buyPopover') && !e.target.closest('.btn')) { closePopover(); }
     };
+
     async function saveBeat() {
         const title = document.getElementById('bTitle').value;
         const fileInput = document.getElementById('bFile');
+        const cover_url = document.getElementById('addCoverUrl').value;
+        const is_free = document.getElementById('addIsFree').checked;
         const exc_price = document.getElementById('pExc').value || 0;
         const ult_price = document.getElementById('pUlt').value || 0;
         const btn = document.getElementById('uploadBtn');
-        if (!title || fileInput.files.length === 0) return alert("Please enter info!");
+
+        if (!title || fileInput.files.length === 0) return alert("Missing Info!");
+
         const file = fileInput.files[0];
         const fileName = `${Date.now()}-${file.name}`;
         btn.disabled = true; btn.innerText = "Uploading...";
+
         try {
             await supabaseClient.storage.from('beats-files').upload(fileName, file);
             const { data: urlData } = supabaseClient.storage.from('beats-files').getPublicUrl(fileName);
-            await supabaseClient.from('beats').insert([{ title, audio_url: urlData.publicUrl, exc_price, ult_price }]);
+            
+            await supabaseClient.from('beats').insert([{ 
+                title, 
+                audio_url: urlData.publicUrl, 
+                exc_price, 
+                ult_price,
+                cover_url,
+                is_free 
+            }]);
+            
             alert("Published! 🔥"); loadData();
         } catch (err) { alert("Error: " + err.message); }
         finally { btn.disabled = false; btn.innerText = "Publish Beat"; }
