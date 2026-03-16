@@ -182,7 +182,7 @@
     }
 
     async function markAsSold(id) {
-        await supabaseClient.from('beats').update({is_sold: true}).eq('id', id);
+        await supabaseClient.from('beats').update({is_sold: false}).eq('id', id);
         loadData(); // هنا أصلحنا الخطأ الذي كان يمنع الموقع من العمل
     }
 
