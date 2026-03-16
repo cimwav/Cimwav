@@ -153,15 +153,24 @@
 
     function closePopover() { document.getElementById('buyPopover').style.display = 'none'; }
 
-    function confirmPurchase() {
-        const name = document.getElementById('pCustName').value;
-        const country = document.getElementById('pCustCountry').value;
-        if(!name || !country) return alert("Please fill your info");
-        const subject = `Order: ${activeBeat.name} (${activeBeat.license})`;
-        const body = `Beat: ${activeBeat.name}\nLicense: ${activeBeat.license}\nPrice: $${activeBeat.price}\n\nBuyer: ${name}\nCountry: ${country}`;
-        window.location.href = `mailto:rouni.beats@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        closePopover();
-    }
+   function confirmPurchase() {
+    const name = document.getElementById('pCustName').value;
+    const country = document.getElementById('pCustCountry').value;
+    if(!name || !country) return alert("Please fill your info");
+
+    const orderDetails = `Order: ${activeBeat.name}\nLicense: ${activeBeat.license}\nPrice: $${activeBeat.price}\nBuyer: ${name}\nCountry: ${country}`;
+    
+    // محاولة فتح تطبيق الإيميل
+    const subject = `Order: ${activeBeat.name}`;
+    window.location.href = `mailto:rouni.beats@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(orderDetails)}`;
+
+    // نسخ التفاصيل تلقائياً (احتياطاً لمن لا يملك تطبيق إيميل)
+    navigator.clipboard.writeText(orderDetails).then(() => {
+        alert("Order details copied to clipboard! If your email app didn't open, please paste the details in an email to rouni.beats@gmail.com");
+    });
+
+    closePopover();
+}
 
     window.onclick = function(e) { if (!e.target.closest('#buyPopover')) closePopover(); };
 
