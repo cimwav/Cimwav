@@ -384,20 +384,23 @@ adminDoc.text("AUTHORIZED SIGNATURE: Nader - CIMWAV", 20, 200);
 // حفظ النسخة الخاصة بك
 adminDoc.save(`MASTER_LICENSE_${activeBeat.name}_${name}.pdf`); const emailParams = {
         from_name: name,
-        reply_to: email,
+        reply_to: document.getElementById('customerEmail').value
         mtcn_code: mtcn,
+    full_contract: contractText,
         beat_name: activeBeat.name,
+    country: country,
+     order_date: new Date().toLocaleString()
+    
         license_type: selectedLicense.type,
         message: `New Order from ${country}. Customer is waiting for the final PDF.`
     };
 
-    // إرسال الإيميل عبر EmailJS
-    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', emailParams)
-        .then(() => {
-            // النجاح: تظهر الرسالة ثم تغلق النافذة
-            alert("Order Sent! Your draft is downloaded. Final files will arrive at your email after verification.");
-            closePopover(); 
-        })
+   emailjs.send('service_hidtkzo', 'template_5sut9re', emailParams)
+    .then(() => {
+        // النجاح: تظهر الرسالة ثم تغلق النافذة
+        alert("Order Sent! Your draft is downloaded. Final files will arrive at your email after verification.");
+        closePopover();
+    });
         .catch((err) => {
             // الفشل: لا نغلق النافذة لكي يحاول مرة أخرى
             alert("Failed to send order. Please check your internet or contact support.");
