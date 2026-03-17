@@ -315,7 +315,7 @@ customerDoc.text("  immediately via email once the MTCN code is validated.", 25,
 // الفوتر (Footer)
 customerDoc.setFontSize(8);
 customerDoc.setTextColor(150, 150, 150);
-customerDoc.text("Cimwav Productions | Tozeur, Tunisia | support@cimwav.com", 105, 285, { align: "center" });
+customerDoc.text("Cimwav Productions | Tozeur, Tunisia | cimwav@gmail.com", 105, 285, { align: "center" });
 
 customerDoc.save(`CIMWAV_DRAFT_${activeBeat.name}.pdf`);
 // --- 2. OFFICIAL COMPOSER RECORD (The Clean Copy for Admin) ---
@@ -341,7 +341,7 @@ adminDoc.setFontSize(10);
 const fullDate = new Date().toLocaleString();
 adminDoc.text(`Issue Date: ${fullDate}`, 20, 62);
 adminDoc.text(`Master ID: CIM-${Math.floor(Math.random() * 1000000)}`, 20, 69);
-adminDoc.text(`Composer: ROUNI (CIMWAV)`, 20, 76);
+adminDoc.text(`Composer: Nader (CIMWAV)`, 20, 76);
 adminDoc.text(`Licensee: ${name} (${email})`, 20, 83);
 adminDoc.text(`Work Title: "${activeBeat.name}"`, 20, 90);
 
@@ -453,7 +453,7 @@ function closePopover() {
     async function deleteItem(id) { if(confirm("Are you sure?")) { await supabaseClient.from('beats').delete().eq('id', id); loadData(); } }
     async function markAsSold(id) { await supabaseClient.from('beats').update({is_sold: true}).eq('id', id); loadData(); }
     function runSearch() { const term = document.getElementById('mainSearchBar').value.toLowerCase(); renderBeats(beatsData.filter(b => b.title.toLowerCase().includes(term))); }
-    function contactMe() { window.location.href = "mailto:rouni.beats@gmail.com"; }
+    function contactMe() { window.location.href = "mailto:cimwav@gmail.com"; }
     function shareSite() { prompt("Copy site link:", window.location.href.split('#')[0]); }
 
     loadData();
