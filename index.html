@@ -403,8 +403,20 @@ customerDoc.text(`Reference ID: ${referenceID}`, 20, 90);
         message: `New Order for ${activeBeat.name}. Customer Email: ${document.getElementById('pCustEmail').value}`
     };
 
-    emailjs.send('service_hidtkzo', 'template_5sut9re', emailParams)
+  emailjs.send('service_hidtkzo', 'template_5sut9re', emailParams)
     .then(() => {
+        // 1. تعريف بيانات الزبون
+        const customerParams = {
+            to_name: name,
+            to_email: email, 
+            beat_name: activeBeat.name,
+            reference_id: referenceID
+        };
+
+        // 2. أمر الإرسال الثاني (يجب أن يكون مستقلاً وليس داخل القوس السابق)
+        emailjs.send('service_hidtkzo', 'YOUR_CUSTOMER_TEMPLATE_ID', customerParams);
+
+        // 3. التنبيه وإغلاق النافذة
         alert("Order Sent! Your draft is downloaded. Final files will arrive at your email after verification.");
         closePopover();
     })
