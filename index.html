@@ -262,7 +262,7 @@ async function processOrder() {
     const email = document.getElementById('pCustEmail').value;
     const country = document.getElementById('pCustCountry').value;
     const mtcn = document.getElementById('pMTCN').value;
-
+const referenceID = "CW-" + Math.floor(Math.random() * 1000000000);
     if(!name || !email || !country || !mtcn) return alert("Please fill all details!");
    const userConsent = confirm("Do you agree to download the payment draft? \n\nNote: The official contract and master files will be sent only after payment verification.");
     if (!userConsent) {
@@ -381,14 +381,16 @@ async function processOrder() {
     // --- إعداد وإرسال الإيميل ---
     const emailParams = {
         from_name: name,
-        reply_to: email,
+        reply_to: document.getElementById('pCustEmail').value,
+        customer_email: document.getElementById('pCustEmail').value,
         mtcn_code: mtcn,
+        reference_id: referenceID,
         full_contract: contractText,
         beat_name: activeBeat.name,
         country: country,
         order_date: fullDate,
         license_type: selectedLicense.type,
-        message: `New Order from ${country}. Customer is waiting for the final PDF.`
+        message: `New Order for ${activeBeat.name}. Customer Email: ${document.getElementById('pCustEmail').value}`
     };
 
     emailjs.send('service_hidtkzo', 'template_5sut9re', emailParams)
