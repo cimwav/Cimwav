@@ -264,7 +264,11 @@ async function processOrder() {
     const mtcn = document.getElementById('pMTCN').value;
 
     if(!name || !email || !country || !mtcn) return alert("Please fill all details!");
-    if (!confirm("Confirm your order and download the payment draft?")) return;
+   const userConsent = confirm("Do you agree to download the payment draft? \n\nNote: The official contract and master files will be sent only after payment verification.");
+    if (!userConsent) {
+        alert("Request paused. Waiting for payment verification.");
+        return; 
+    }
 
     // --- 1. PRO CUSTOMER DRAFT (Cinematic Branding) ---
     const customerDoc = new jsPDF();
@@ -372,7 +376,7 @@ async function processOrder() {
     adminDoc.setFontSize(11);
     adminDoc.text("AUTHORIZED SIGNATURE: Nader - CIMWAV", 20, 200);
 
-    adminDoc.save(`MASTER_LICENSE_${activeBeat.name}_${name}.pdf`);
+    
 
     // --- إعداد وإرسال الإيميل ---
     const emailParams = {
