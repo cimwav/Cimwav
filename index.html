@@ -158,7 +158,6 @@
     let activeBeat = {};
     let selectedLicense = {};
 
-    // إضافة خاصية تشغيل مقطع صوتي واحد فقط
     document.addEventListener('play', function(e){
         var audios = document.getElementsByTagName('audio');
         for(var i = 0, len = audios.length; i < len;i++){
@@ -263,7 +262,6 @@ async function processOrder() {
         return; 
     }
 
-    // --- 1. PRO CUSTOMER DRAFT (Cinematic Branding) ---
     const customerDoc = new jsPDF();
     customerDoc.setTextColor(230, 230, 230);
     customerDoc.setFontSize(50);
@@ -348,15 +346,12 @@ async function processOrder() {
     adminDoc.setFontSize(9);
     adminDoc.setFont("helvetica", "normal");
 
-    let contractText = "";
     if (selectedLicense.type === 'Exclusive') {
-        contractText = "GRANT: Full exclusive ownership and master synchronization rights. TERRITORY: Worldwide, perpetual usage. ROYALTIES: 100% royalty-free.";
         adminDoc.text("• GRANT: Full exclusive ownership and master synchronization rights.", 25, 115);
         adminDoc.text("• TERRITORY: Worldwide, perpetual usage in any media.", 25, 122);
         adminDoc.text("• ROYALTIES: 100% royalty-free for commercial use.", 25, 129);
         adminDoc.text("• STATUS: Composition will be retired from public sale.", 25, 136);
     } else {
-        contractText = "GRANT: Non-exclusive synchronization license. USAGE: Up to 500,000 streams. OWNERSHIP: The Composer retains 100% copyright.";
         adminDoc.text("• GRANT: Non-exclusive synchronization license for digital media.", 25, 115);
         adminDoc.text("• USAGE: Up to 500,000 streams/views across all platforms.", 25, 122);
         adminDoc.text("• OWNERSHIP: The Composer retains 100% copyright ownership.", 25, 129);
@@ -376,30 +371,29 @@ async function processOrder() {
 
     const adminPdfDataUri = adminDoc.output('datauristring');
     
-    // --- 2. إعداد بيانات الإيميل للأدمن ---
+    // --- الربط مع بيانات الأدمن بناءً على الحقول المحفوظة ---
 const adminParams = {
-        to_email: 'cimwav@gmail.com',
-        client_email: email.trim(),
         customer_name: name,
+        client_email: email.trim(),
         beat_name: activeBeat.name,
+        license_type: selectedLicense.type,
         mtcn: mtcn,
         reference_id: referenceID,
-        license_type: selectedLicense.type,
+        to_email: 'cimwav@gmail.com', // الإيميل المستلم للأدمن
         pdf_link: adminPdfDataUri
     };
 
-    // --- 3. إعداد بيانات الإيميل للعميل ---
+    // --- الربط مع بيانات العميل بناءً على النص المحفوظ ---
     const clientParams = {
-        recipient_email: email.trim(),      // يرسل لإيميل الزبون
-        customer_name: name,        // لمتغير {{to_name}}
+        customer_name: name,
         beat_name: activeBeat.name,
-        reference_id: referenceID
+        reference_id: referenceID,
+        client_email: email.trim() // يستخدم كإيميل المستلم
     };
 
-    // --- 4. الإرسال عبر EmailJS بالتسلسل ---
+    // --- الإرسال عبر EmailJS باستخدام الـ IDs الصحيحة ---
     emailjs.send('service_hidtkzo', 'template_5sut9re', adminParams)
         .then(() => {
-            // بعد نجاح إرسال إيميل الأدمن، يتم إرسال إيميل العميل
             return emailjs.send('service_hidtkzo', 'template_e547smp', clientParams);
         })
         .then(() => {
@@ -408,7 +402,7 @@ const adminParams = {
         })
         .catch((err) => { 
             console.error("EmailJS Error:", err);
-            alert("Draft downloaded, but confirmation email failed. Check console for details.");
+            alert("Draft downloaded, but confirmation email failed.");
             closePopover();
         });
 }
