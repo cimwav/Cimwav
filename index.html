@@ -6,9 +6,9 @@
     <title>Cimwav | Premium Beats</title>
     
     <script src="https://smtpjs.com/v3/smtp.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
   (function(){
@@ -259,7 +259,13 @@
     }
 
 async function processOrder() {
-    const { jsPDF } = window.jspdf;
+    // هذا السطر يضمن استدعاء المكتبة سواء كانت umd أو عادية
+    const { jsPDF } = window.jspdf ? window.jspdf : window; 
+    
+    if (!jsPDF) {
+        return alert("Error: jsPDF library not loaded. Please refresh the page.");
+    }
+
     const name = document.getElementById('pCustName').value;
     const email = document.getElementById('pCustEmail').value;
     const country = document.getElementById('pCustCountry').value;
