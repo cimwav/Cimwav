@@ -6,7 +6,7 @@
     <title>Cimwav | Premium Beats</title>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<script src="https://smtpjs.com/v3/smtp.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>
   (function(){
@@ -429,17 +429,16 @@ customerDoc.text(`Reference ID: ${referenceID}`, 20, 90);
               closePopover();
           });
       }
-    ).catch(err => {
-        alert("Error sending PDF to Admin! Please try again.");
-        console.error("SMTP Error: ", err);
-    });
-} // نهاية دالة processOrder
+).catch(err => {
+            alert("Error sending PDF to Admin! Please try again.");
+            console.error("SMTP Error: ", err);
+        });
+    } // <--- هذا هو قوس إغلاق دالة processOrder الصحيح
 
-
-function closePopover() { 
-    const popover = document.getElementById('buyPopover');
-    if (popover) popover.style.display = 'none'; 
-}
+    function closePopover() { 
+        const popover = document.getElementById('buyPopover');
+        if (popover) popover.style.display = 'none'; 
+    }
 
     window.onclick = function(e) {
         const popover = document.getElementById('buyPopover');
