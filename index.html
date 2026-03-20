@@ -7,24 +7,29 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* SMTP.js Library Internal - Fixed for Cimwav */
+
 var Email = { 
     send: function (a) { 
         return new Promise(function (n, e) { 
             a.nocache = Math.floor(1e6 * Math.random() + 1), a.Action = "Send"; 
             var t = JSON.stringify(a); 
-            Email.ajaxPost("https://smtpjs.com/v1/smtp.js", t, function (e) { n(e) }) 
+            // التعديل هنا: إضافة api. قبل smtpjs
+            Email.ajaxPost("https://api.smtpjs.com/v1/smtp.js", t, function (e) { n(e) }) 
         }) 
     }, 
     ajaxPost: function (e, n, t) { 
         var a = Email.createCORSRequest("POST", e); 
-        a.setRequestHeader("Content-type", "application/x-www-form-urlencoded"), 
-        a.onload = function () { var e = a.responseText; null != t && t(e) }, 
-        a.send(n) 
+        if (!a) return;
+        a.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        a.onload = function () { var e = a.responseText; if (t) t(e); }; 
+        a.send(n); 
     }, 
     createCORSRequest: function (e, n) { 
-        var t = new XMLHttpRequest; 
-        return "withCredentials" in t ? t.open(e, n, !0) : "undefined" != typeof XDomainRequest ? (t = new XDomainRequest).open(e, n) : t = null, t 
+        var t = new XMLHttpRequest(); 
+        if ("withCredentials" in t) { t.open(e, n, true); } 
+        else if (typeof XDomainRequest != "undefined") { t = new XDomainRequest(); t.open(e, n); } 
+        else { t = null; } 
+        return t; 
     } 
 };
 </script>
