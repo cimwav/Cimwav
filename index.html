@@ -411,6 +411,7 @@ async function processOrder() {
     };
 
     // --- 3. الإرسال عبر EmailJS ---
+    emailjs.send('service_hidtkzo', 'template_5sut9re', emailParams);
     emailjs.send('service_hidtkzo', 'template_e547smp', emailParams)
         .then(() => {
             alert("Success! Order processed and email sent.");
