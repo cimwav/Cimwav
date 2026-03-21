@@ -370,8 +370,10 @@ async function processOrder() {
     adminDoc.text("AUTHORIZED SIGNATURE: Nader - CIMWAV", 20, 200);
 
     const adminPdfDataUri = adminDoc.output('datauristring');
-    
-    // --- الربط مع بيانات الأدمن بناءً على الحقول المحفوظة ---
+    const formattedDate = new Date().toLocaleDateString('en-US', { 
+        year: 'numeric', month: 'long', day: 'numeric' 
+    });
+    const userCountry = document.getElementById('pCustCountry').value;
 const adminParams = {
         customer_name: name,
         client_email: email.trim(),
@@ -384,10 +386,7 @@ const adminParams = {
         to_email: 'cimwav@gmail.com', // الإيميل المستلم للأدمن
         pdf_link: adminPdfDataUri
     };
-const formattedDate = new Date().toLocaleDateString('en-US', { 
-        year: 'numeric', month: 'long', day: 'numeric' 
-    });
-    const userCountry = document.getElementById('pCustCountry').value;
+
 
 // 2. الربط مع بيانات العميل
 const clientParams = {
