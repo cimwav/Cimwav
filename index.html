@@ -382,20 +382,21 @@ const adminParams = {
         to_email: 'cimwav@gmail.com', // الإيميل المستلم للأدمن
         pdf_link: adminPdfDataUri
     };
+const formattedDate = new Date().toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+});
 
-    // --- الربط مع بيانات العميل بناءً على النص المحفوظ ---
-    const clientParams = {
-        date: new Date().toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-    }),
-        customer_name: name,
-        beat_name: activeBeat.name,
-        reference_id: referenceID,
-        client_email: email.trim(),
-        country: document.getElementById('pCustCountry').value,// يستخدم كإيميل المستلم
-    };
+// 2. الربط مع بيانات العميل
+const clientParams = {
+    date: formattedDate, // سيظهر في القالب كـ {{date}}
+    customer_name: name,
+    beat_name: activeBeat.name, // تأكد هل تستخدم beat_name أم production_name في القالب؟
+    reference_id: referenceID,
+    client_email: email.trim(),
+    country: document.getElementById('pCustCountry').value
+};
 
     // --- الإرسال عبر EmailJS باستخدام الـ IDs الصحيحة ---
     emailjs.send('service_hidtkzo', 'template_5sut9re', adminParams)
