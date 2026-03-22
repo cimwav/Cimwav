@@ -345,17 +345,24 @@ async function processOrder() {
     adminDoc.setTextColor(0, 0, 0);
     adminDoc.setFontSize(9);
     adminDoc.setFont("helvetica", "normal");
-let licenseText = "";
+let licenseText = ""; 
+
     if (selectedLicense.type === 'Exclusive') {
-        adminDoc.text("• GRANT: Full exclusive ownership and master synchronization rights.", 25, 115);
-        adminDoc.text("• TERRITORY: Worldwide, perpetual usage in any media.", 25, 122);
-        adminDoc.text("• ROYALTIES: 100% royalty-free for commercial use.", 25, 129);
-        adminDoc.text("• STATUS: Composition will be retired from public sale.", 25, 136);
+        // نص الرخصة الحصرية للإيميل
+        licenseText = `
+        • GRANT: Full exclusive ownership and master synchronization rights.
+        • TERRITORY: Worldwide, perpetual usage in any media.
+        • ROYALTIES: 100% royalty-free for commercial use.
+        • STATUS: Composition will be retired from public sale.
+        `;
     } else {
-        adminDoc.text("• GRANT: Non-exclusive synchronization license for digital media.", 25, 115);
-        adminDoc.text("• USAGE: Up to 500,000 streams/views across all platforms.", 25, 122);
-        adminDoc.text("• OWNERSHIP: The Composer retains 100% copyright ownership.", 25, 129);
-        adminDoc.text("• STATUS: Composition remains available for public licensing.", 25, 136);
+        // نص الرخصة العادية للإيميل
+        licenseText = `
+        • GRANT: Non-exclusive synchronization license for digital media.
+        • USAGE: Up to 50,000 streams/views across all platforms.
+        • OWNERSHIP: The Composer retains 100% copyright ownership.
+        • STATUS: Composition remains available for public licensing.
+        `;
     }
 
     adminDoc.setFont("helvetica", "bold");
