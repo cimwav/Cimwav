@@ -221,9 +221,10 @@
         `).join('');
     }
 
-    function handleBuy(event, beatName, exc_price, ult_price) {
+    function handleBuy(event, beatName, exc_price, ult_price, bpm, key) {
         event.stopPropagation();
-        activeBeat = { name: beatName, exc: exc_price, ult: ult_price };
+        activeBeat = { name: beatName, exc: exc_price, ult: ult_price, bpm: bpm, 
+        key: key };
         document.getElementById('step1').style.display = 'block';
         document.getElementById('step2').style.display = 'none';
         
@@ -474,8 +475,8 @@ const clientParams = {
                 ult_price,
                 cover_url,
                 is_free,
-                bpm: parseInt(bpm), 
-                key: key
+                bpm,
+                key,
             }]);
             
             alert("Published! 🔥"); loadData();
