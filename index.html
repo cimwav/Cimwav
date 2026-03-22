@@ -200,8 +200,8 @@
                 <span class="title">${b.title}</span>
 ${(b.bpm || b.key) ? `
     <div style="font-size: 12px; color: #888; margin-bottom: 10px; text-align: left;">
-        ${b.bpm ? `<span style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px;">BPM: ${b.bpm}</span>` : ''} 
-        ${b.key ? `<span style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px; margin-left: 5px;">Key: ${b.key}</span>` : ''}
+        ${b.bpm ? `<span style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px; border: 1px solid #333;">BPM: ${b.bpm}</span>` : ''} 
+        ${b.key ? `<span style="background: #1a1a1a; padding: 2px 6px; border-radius: 4px; border: 1px solid #333; margin-left: 5px;">Key: ${b.key}</span>` : ''}
     </div>
 ` : ''}
                 <audio src="${b.audio_url}" controls controlsList="nodownload"></audio>
