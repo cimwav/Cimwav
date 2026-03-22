@@ -128,6 +128,8 @@
             <input type="text" id="bTitle" placeholder="Beat Name" class="full">
             <input type="file" id="bFile" accept="audio/mp3" class="full">
             <input type="text" id="addCoverUrl" placeholder="Cover Image URL (Direct link)" class="full">
+            <input type="number" id="bBPM" placeholder="BPM (e.g. 140)">
+    <input type="text" id="bKey" placeholder="Key (e.g. Am)">
             <input type="number" id="pExc" placeholder="Exclusive Price ($)">
             <input type="number" id="pUlt" placeholder="Ultimate Price ($)">
 
@@ -196,6 +198,9 @@
                 ${b.is_sold ? '<span class="sold-tag">SOLD</span>' : ''}
                 <img src="${b.cover_url || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=60'}" class="cover-img" alt="Cover">
                 <span class="title">${b.title}</span>
+                <div style="font-size: 12px; color: #888; margin-bottom: 10px;">
+    <span>BPM: ${b.bpm || 'N/A'}</span> | <span>Key: ${b.key || 'N/A'}</span>
+</div>
                 <audio src="${b.audio_url}" controls controlsList="nodownload"></audio>
                 
                <div class="price-row">
@@ -222,12 +227,19 @@
         document.getElementById('step1').style.display = 'block';
         document.getElementById('step2').style.display = 'none';
         
-        const buttonsDiv = document.getElementById('licenseButtons');
-        buttonsDiv.innerHTML = `
-            <button class="btn-outline" style="flex:1;" onclick="goToStep2('Exclusive', ${exc_price})">Exclusive ($${exc_price})</button>
-            <button class="btn" style="flex:1;" onclick="goToStep2('Ultimate', ${ult_price})">Ultimate ($${ult_price})</button>
-        `;
+       const buttonsDiv = document.getElementById('licenseButtons');
 
+buttonsDiv.innerHTML = `
+    <div style="width: 100%; text-align: center; margin-bottom: 15px;">
+        <span style="border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 12px; color: #888;">BPM: ${activeBeat.bpm || 'N/A'}</span>
+        <span style="border: 1px solid #333; padding: 4px 10px; border-radius: 4px; margin-left: 10px; font-size: 12px; color: #888;">Key: ${activeBeat.key || 'N/A'}</span>
+    </div>
+
+    <div style="display: flex; gap: 10px; width: 100%;">
+        <button class="btn-outline" style="flex:1; font-size: 14px;" onclick="goToStep2('Exclusive', ${exc_price})">Exclusive ($${exc_price})</button>
+        <button class="btn" style="flex:1; font-size: 14px;" onclick="goToStep2('Ultimate', ${ult_price})">Ultimate ($${ult_price})</button>
+    </div>
+`;
         const popover = document.getElementById('buyPopover');
         const rect = event.currentTarget.getBoundingClientRect();
         popover.style.display = 'block';
@@ -348,6 +360,7 @@ async function processOrder() {
 let licenseText = ""; 
     if (selectedLicense.type === 'Exclusive') {
         licenseText = `
+        • ISSUED BY: CIMWAV Productions (Tunisia).
         • GRANT: Full exclusive ownership and master synchronization rights.
         • TERRITORY: Worldwide, perpetual usage in any media.
         • ROYALTIES: 100% royalty-free for commercial use.
@@ -355,6 +368,7 @@ let licenseText = "";
         `;
     } else {
         licenseText = `
+        • ISSUED BY: CIMWAV Productions (Tunisia).
         • GRANT: Non-exclusive synchronization license for digital media.
         • USAGE: Up to 50,000 streams/views across all platforms.
         • OWNERSHIP: The Composer retains 100% copyright ownership.
@@ -401,6 +415,8 @@ const clientParams = {
     reference_id: referenceID,
     client_email: email.trim(),
     country: country,
+    bpm: activeBeat.bpm,
+    key: activeBeat.key,
     license_details: licenseText,
 };
 
@@ -438,6 +454,8 @@ const clientParams = {
         const exc_price = document.getElementById('pExc').value || 0;
         const ult_price = document.getElementById('pUlt').value || 0;
         const btn = document.getElementById('uploadBtn');
+        const bpm = document.getElementById('bBPM').value; // جديد
+    const key = document.getElementById('bKey').value;
 
         if (!title || fileInput.files.length === 0) return alert("Missing Info!");
 
@@ -455,7 +473,9 @@ const clientParams = {
                 exc_price, 
                 ult_price,
                 cover_url,
-                is_free 
+                is_free,
+                bpm: parseInt(bpm), 
+                key: key
             }]);
             
             alert("Published! 🔥"); loadData();
