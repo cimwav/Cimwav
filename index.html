@@ -198,9 +198,13 @@
                 ${b.is_sold ? '<span class="sold-tag">SOLD</span>' : ''}
                 <img src="${b.cover_url || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=60'}" class="cover-img" alt="Cover">
                 <span class="title">${b.title}</span>
-                <div style="font-size: 12px; color: #888; margin-bottom: 10px;">
-    <span>BPM: ${b.bpm || 'N/A'}</span> | <span>Key: ${b.key || 'N/A'}</span>
-</div>
+${(b.bpm || b.key) ? `
+    <div style="font-size: 12px; color: #888; margin-bottom: 10px;">
+        ${b.bpm ? `<span>BPM: ${b.bpm}</span>` : ''} 
+        ${(b.bpm && b.key) ? ' | ' : ''} 
+        ${b.key ? `<span>Key: ${b.key}</span>` : ''}
+    </div>
+` : ''}
                 <audio src="${b.audio_url}" controls controlsList="nodownload"></audio>
                 
                <div class="price-row">
@@ -233,10 +237,6 @@
        const buttonsDiv = document.getElementById('licenseButtons');
 
 buttonsDiv.innerHTML = `
-    <div style="width: 100%; text-align: center; margin-bottom: 15px;">
-        <span style="border: 1px solid #333; padding: 4px 10px; border-radius: 4px; font-size: 12px; color: #888;">BPM: ${activeBeat.bpm || 'N/A'}</span>
-        <span style="border: 1px solid #333; padding: 4px 10px; border-radius: 4px; margin-left: 10px; font-size: 12px; color: #888;">Key: ${activeBeat.key || 'N/A'}</span>
-    </div>
 
     <div style="display: flex; gap: 10px; width: 100%;">
         <button class="btn-outline" style="flex:1; font-size: 14px;" onclick="goToStep2('Exclusive', ${exc_price})">Exclusive ($${exc_price})</button>
