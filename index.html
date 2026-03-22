@@ -345,7 +345,7 @@ async function processOrder() {
     adminDoc.setTextColor(0, 0, 0);
     adminDoc.setFontSize(9);
     adminDoc.setFont("helvetica", "normal");
-
+let licenseText = "";
     if (selectedLicense.type === 'Exclusive') {
         adminDoc.text("• GRANT: Full exclusive ownership and master synchronization rights.", 25, 115);
         adminDoc.text("• TERRITORY: Worldwide, perpetual usage in any media.", 25, 122);
