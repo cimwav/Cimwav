@@ -207,7 +207,9 @@
     ${b.is_free ? `
         <a href="${b.audio_url}" download="${b.title}.mp3" class="btn">Download Free MP3</a>
     ` : (b.is_sold ? '' : `
-        <button class="btn" onclick="handleBuy(event, '${b.title}', ${b.exc_price}, ${b.ult_price})">BUY LICENSE</button>
+        <button class="btn" onclick="handleBuy(event, '${b.title}', ${b.exc_price}, ${b.ult_price}, '${b.bpm || 'N/A'}', '${b.key || 'N/A'}')">
+    BUY LICENSE
+</button>
     `)}
 </div>
 
