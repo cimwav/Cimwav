@@ -236,9 +236,18 @@ ${(b.bpm || b.key) ? `
 
 buttonsDiv.innerHTML = `
 
-    <div style="display: flex; gap: 10px; width: 100%;">
-        <button class="btn-outline" style="flex:1; font-size: 14px;" onclick="goToStep2('Exclusive', ${exc_price})">Exclusive ($${exc_price})</button>
-        <button class="btn" style="flex:1; font-size: 14px;" onclick="goToStep2('Ultimate', ${ult_price})">Ultimate ($${ult_price})</button>
+<div style="display: flex; gap: 10px; width: 100%; margin-top: 10px; box-sizing: border-box;">
+        <button class="btn-outline" 
+                style="flex: 1; height: 48px; font-size: 14px; padding: 0; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer;" 
+                onclick="goToStep2('Exclusive', ${exc_price})">
+            Exclusive ($${exc_price})
+        </button>
+        
+        <button class="btn" 
+                style="flex: 1; height: 48px; font-size: 14px; padding: 0; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer;" 
+                onclick="goToStep2('Ultimate', ${ult_price})">
+            Ultimate ($${ult_price})
+        </button>
     </div>
 `;
         const popover = document.getElementById('buyPopover');
