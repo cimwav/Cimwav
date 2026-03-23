@@ -500,9 +500,42 @@ const clientParams = {
     async function markAsSold(id) { await supabaseClient.from('beats').update({is_sold: true}).eq('id', id); loadData(); }
     function runSearch() { const term = document.getElementById('mainSearchBar').value.toLowerCase(); renderBeats(beatsData.filter(b => b.title.toLowerCase().includes(term))); }
     function contactMe() { window.location.href = "mailto:cimwav@gmail.com"; }
-    function shareSite() { prompt("https://cimwav.github.io/Cimwav/:", window.location.href.split('#')[0]); }
+async function shareSite() {
+    const shareData = {
+        title: 'CIMWAV | Cinematic Scores',
+        text: 'Listen to my latest cinematic film scores on CIMWAV!',
+        url: window.location.origin + window.location.pathname // يأخذ الرابط الحالي تلقائياً (حتى لو غيرت الدومين)
+    };
 
-    loadData();
+    try {
+        if (navigator.share) {
+            // تفتح قائمة المشاركة الأصلية في الهاتف (واتساب، انستجرام، إلخ)
+            await navigator.share(shareData);
+        } else {
+            // للكمبيوتر: نسخ الرابط تلقائياً مع تنبيه أنيق
+            await navigator.clipboard.writeText(shareData.url);
+            showToast("Link copied to clipboard! ✨");
+        }
+    } catch (err) {
+        console.log('Share failed:', err);
+    }
+}
+
+// تنبيه صغير يظهر عند نسخ الرابط (Toast)
+function showToast(message) {
+    const toast = document.createElement("div");
+    toast.innerText = message;
+    toast.style.cssText = `
+        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+        background: linear-gradient(45deg, #bf953f, #aa771c); color: #000;
+        padding: 12px 24px; border-radius: 50px; font-size: 14px; font-weight: bold;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.4); z-index: 10000; transition: 0.5s;
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 500); }, 2500);
+}
+
+loadData();
 </script>
 </body>
 </html>
