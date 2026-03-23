@@ -236,17 +236,21 @@ ${(b.bpm || b.key) ? `
 
 buttonsDiv.innerHTML = `
     <div style="display: flex; gap: 10px; width: 100%; margin-top: 15px; box-sizing: border-box;">
-        <button class="btn-outline" 
-                style="flex: 1; width: 50%; height: 45px; font-size: 13px; padding: 0; margin: 0; display: flex; align-items: center; justify-content: center; box-sizing: border-box; text-align: center; border: 1px solid var(--primary); background: transparent; color: var(--primary); cursor: pointer; border-radius: 6px;" 
+        
+        <button class="btn" 
+                style="flex: 1; width: 50%; height: 45px; font-size: 13px; font-weight: bold; padding: 0; margin: 0; display: flex; align-items: center; justify-content: center; box-sizing: border-box; text-align: center; border: none; cursor: pointer; border-radius: 6px; 
+                       background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); 
+                       color: #000; box-shadow: 0 4px 15px rgba(184, 134, 11, 0.2);" 
                 onclick="goToStep2('Exclusive', ${exc_price})">
             Exclusive ($${exc_price})
         </button>
         
-        <button class="btn" 
-                style="flex: 1; width: 50%; height: 45px; font-size: 13px; padding: 0; margin: 0; display: flex; align-items: center; justify-content: center; box-sizing: border-box; text-align: center; border: none; background: var(--primary); color: #000; cursor: pointer; border-radius: 6px;" 
+        <button class="btn-outline" 
+                style="flex: 1; width: 50%; height: 45px; font-size: 13px; padding: 0; margin: 0; display: flex; align-items: center; justify-content: center; box-sizing: border-box; text-align: center; border: 1px solid #444; background: transparent; color: #999; cursor: pointer; border-radius: 6px;" 
                 onclick="goToStep2('Ultimate', ${ult_price})">
             Ultimate ($${ult_price})
         </button>
+        
     </div>
 `;
         const popover = document.getElementById('buyPopover');
