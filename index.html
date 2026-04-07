@@ -374,7 +374,7 @@ async function processOrder() {
                 key,
             }]);
             
-            alert("Published! 🔥"); loadData();
+            alert("Published! ??"); loadData();
         } catch (err) { alert("Error: " + err.message); }
         finally { btn.disabled = false; btn.innerText = "Publish Beat"; }
     }
@@ -410,7 +410,7 @@ async function shareSite() {
             await navigator.share(shareData);
         } else {
             await navigator.clipboard.writeText(shareData.url);
-            showToast("Link copied to clipboard! ✨");
+            showToast("Link copied to clipboard! ?");
         }
     } catch (err) {
         console.log('Share failed:', err);
