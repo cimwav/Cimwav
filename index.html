@@ -302,6 +302,8 @@ async function processOrder() {
         license_details: licenseText,
         date: formattedDate,
         country: country,
+       bpm: activeBeat.bpm || "N/A",
+       key: activeBeat.key || "N/A",
         reference_id: referenceID,
         to_email: 'cimwav@gmail.com'
     };
